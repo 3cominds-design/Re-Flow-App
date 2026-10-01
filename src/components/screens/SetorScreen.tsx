@@ -172,7 +172,7 @@ export const SetorScreen: React.FC<SetorScreenProps> = ({
         </div>
 
         <span className="text-xs font-semibold text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2.5 py-1 rounded-full">
-          Kampus Hijau FIP
+          Kampus Hijau FEB
         </span>
       </div>
 
@@ -477,7 +477,7 @@ export const SetorScreen: React.FC<SetorScreenProps> = ({
                 +{depositSuccessResult.points} pt
               </h3>
               <p className="text-xs text-slate-600 mt-1 max-w-xs mx-auto leading-relaxed">
-                Setoran <span className="font-bold text-slate-900">{depositSuccessResult.weight} kg {depositSuccessResult.category}</span> di {depositSuccessResult.location} telah tercatat dalam kontribusi Fakultas Ilmu Pendidikan.
+                Setoran <span className="font-bold text-slate-900">{depositSuccessResult.weight} kg {depositSuccessResult.category}</span> di {depositSuccessResult.location} telah tercatat dalam kontribusi Fakultas Ekonomi dan Bisnis (FEB).
               </p>
             </div>
 

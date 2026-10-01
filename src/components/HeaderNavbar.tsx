@@ -47,16 +47,16 @@ export const HeaderNavbar: React.FC<HeaderNavbarProps> = ({
             onClick={onOpenProfile}
             className="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-full bg-gradient-to-r from-emerald-50/80 to-cyan-50/80 hover:from-emerald-100 hover:to-cyan-100 border border-emerald-200/60 shadow-sm transition-all active:scale-95 group text-left"
           >
-            <div className="relative w-8 h-8 rounded-full overflow-hidden ring-2 ring-emerald-400/80 shadow-sm">
+            <div className="relative w-9 h-9 aspect-square rounded-full overflow-hidden ring-2 ring-emerald-400 shadow-sm shrink-0 flex items-center justify-center bg-emerald-100/50">
               <img
                 src={user.avatarUrl}
                 alt={user.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover object-center aspect-square"
                 referrerPolicy="no-referrer"
               />
               {/* Gloss shine over avatar */}
               <div 
-                className="absolute inset-0 pointer-events-none"
+                className="absolute inset-0 pointer-events-none rounded-full"
                 style={{
                   background: 'linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 60%)'
                 }}

@@ -251,7 +251,7 @@ export const MahasiswaTab: React.FC = () => {
       <div className="glass-aero-card rounded-3xl p-5 border border-white shadow-sm space-y-4">
         <div className="flex items-center justify-between text-xs text-slate-500">
           <span>Menampilkan <strong className="text-slate-800">{filteredStudents.length}</strong> mahasiswa aktif</span>
-          <span className="text-emerald-700 font-bold">Total 1.248 mahasiswa terdaftar di sistem FIP</span>
+          <span className="text-emerald-700 font-bold">Total 1.248 mahasiswa terdaftar di sistem FEB</span>
         </div>
 
         <div className="overflow-x-auto">

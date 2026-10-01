@@ -16,7 +16,7 @@ export const initialUser = {
   facultyShort: "FEB",
   university: "Universitas Negeri Jakarta",
   major: "S1 Pendidikan Administrasi Perkantoran",
-  avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+  avatarUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&crop=faces&q=80",
   points: 1250,
   totalWasteKg: 12.5,
   growthKg: "+2,5 kg dari bulan lalu",

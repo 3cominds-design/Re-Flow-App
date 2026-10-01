@@ -251,11 +251,11 @@ export const FacultyDashboard: React.FC<FacultyDashboardProps> = ({ onBackToStud
               onClick={() => setShowAdminProfileModal(true)}
               className="flex items-center gap-2 pl-1.5 pr-3 py-1 rounded-full bg-gradient-to-r from-emerald-50 to-cyan-50 hover:from-emerald-100 hover:to-cyan-100 border border-emerald-300 shadow-sm transition-all text-left group"
             >
-              <div className="relative w-9 h-9 rounded-full overflow-hidden border-2 border-emerald-500 shadow-sm">
+              <div className="relative w-9 h-9 aspect-square rounded-full overflow-hidden border-2 border-emerald-500 shadow-sm shrink-0 flex items-center justify-center bg-emerald-100/50">
                 <img
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80"
+                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&auto=format&fit=crop&crop=faces&q=80"
                   alt="Administrator"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center aspect-square"
                 />
               </div>
 
