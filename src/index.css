@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    background: radial-gradient(ellipse at 50% 0%, #e0f7fa 0%, #e8f5e9 45%, #f0fdf4 80%, #e0f2fe 100%);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.015em;
+  }
+}
+
+/* Frutiger Aero Gloss & Glass Utilities */
+.glass-aero {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(240, 253, 250, 0.72) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    0 12px 30px -6px rgba(6, 182, 212, 0.15),
+    0 4px 12px -2px rgba(16, 185, 129, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+}
+
+.glass-aero-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(244, 254, 249, 0.75) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 10px 25px -4px rgba(14, 165, 233, 0.08),
+    0 4px 10px -2px rgba(16, 185, 129, 0.05),
+    inset 0 1px 2px rgba(255, 255, 255, 1);
+}
+
+.glass-aero-green {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.92) 0%, rgba(5, 150, 105, 0.95) 50%, rgba(13, 148, 136, 0.96) 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 14px 28px -5px rgba(5, 150, 105, 0.35),
+    0 8px 16px -3px rgba(6, 182, 212, 0.25),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.6);
+}
+
+.glass-aero-green::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.12) 60%, rgba(255, 255, 255, 0) 100%);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.gloss-pill-btn {
+  background: linear-gradient(180deg, #34d399 0%, #10b981 40%, #059669 85%, #047857 100%);
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 6px 16px -2px rgba(16, 185, 129, 0.45),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.75),
+    inset 0 -2px 3px rgba(4, 120, 87, 0.6);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gloss-pill-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 20px -2px rgba(16, 185, 129, 0.55),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9),
+    inset 0 -2px 3px rgba(4, 120, 87, 0.7);
+}
+
+.gloss-pill-btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 2px 8px rgba(16, 185, 129, 0.35),
+    inset 0 1.5px 3px rgba(0, 0, 0, 0.25);
+}
+
+.gloss-pill-cyan {
+  background: linear-gradient(180deg, #38bdf8 0%, #0ea5e9 40%, #0284c7 85%, #0369a1 100%);
+  color: white;
+  box-shadow:
+    0 6px 16px -2px rgba(14, 165, 233, 0.45),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.75),
+    inset 0 -2px 3px rgba(3, 105, 161, 0.6);
+}
+
+.gloss-pill-cyan:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 8px 20px -2px rgba(14, 165, 233, 0.55),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+.gloss-pill-white {
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 60%, #e2e8f0 100%);
+  color: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow:
+    0 4px 12px rgba(15, 23, 42, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 1),
+    inset 0 -1px 2px rgba(148, 163, 184, 0.3);
+}
+
+/* Frutiger Aero bubble highlight */
+.bubble-gloss {
+  background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 35%, rgba(255, 255, 255, 0.05) 70%, rgba(14, 165, 233, 0.2) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Frutiger Aero Light Reflection & Sheen Keyframes */
+@keyframes aero-shine {
+  0% {
+    transform: translateX(-180%) skewX(-25deg);
+  }
+  35%, 100% {
+    transform: translateX(280%) skewX(-25deg);
+  }
+}
+
+.shine-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shine-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%);
+  transform: translateX(-180%) skewX(-25deg);
+  animation: aero-shine 4.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+.shine-effect-hover:hover::after {
+  animation: aero-shine 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Secondary Subordinate Button Styling */
+.subordinate-btn {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(203, 213, 225, 0.8);
+  color: #334155;
+  transition: all 0.2s ease;
+}
+
+.subordinate-btn:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #94a3b8;
+  color: #0f172a;
+  transform: translateY(-0.5px);
+}
+
+.subordinate-btn:active {
+  transform: translateY(0.5px);
+}
+

@@ -1,0 +1,6 @@
+{
+  "name": "RE-FLOW: Campus Green Business Economy",
+  "description": "Platform digital pengelolaan sampah kampus berbasis Green Business Economy dengan estetika Frutiger Aero, sistem poin, redeem reward, donasi green fund, dan dashboard fakultas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
