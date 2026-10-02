@@ -4,9 +4,6 @@ import {
   Gift, 
   Sparkles, 
   CheckCircle, 
-  QrCode, 
-  Copy, 
-  Check, 
   Utensils, 
   Store, 
   Printer, 
@@ -16,7 +13,8 @@ import {
   History,
   Leaf,
   Trash2,
-  Package
+  Package,
+  Coins
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { initialRewards } from '../../data/mockData';
@@ -58,9 +56,8 @@ export const PointsScreen: React.FC<PointsScreenProps> = ({
   const [pendingRedeemReward, setPendingRedeemReward] = useState<RewardItem | null>(null);
   const [redeemSuccessResult, setRedeemSuccessResult] = useState<{
     reward: RewardItem;
-    voucherCode: string;
+    remainingPoints: number;
   } | null>(null);
-  const [copiedCode, setCopiedCode] = useState<boolean>(false);
 
   // CONTRIBUTE State & Feedback
   const [selectedDonationTier, setSelectedDonationTier] = useState<number>(100);
@@ -120,21 +117,21 @@ export const PointsScreen: React.FC<PointsScreenProps> = ({
     if (!pendingRedeemReward) return;
     if (userPoints < pendingRedeemReward.pointsCost) return;
 
-    const generatedCode = `${pendingRedeemReward.codePrefix}-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(100 + Math.random() * 900)}`;
-    
+    const remaining = userPoints - pendingRedeemReward.pointsCost;
+
     onRedeemReward(pendingRedeemReward);
     setRedeemSuccessResult({
       reward: pendingRedeemReward,
-      voucherCode: generatedCode,
+      remainingPoints: remaining,
     });
     setPendingRedeemReward(null);
 
     try {
       confetti({
-        particleCount: 65,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#10b981', '#06b6d4', '#34d399', '#fbbf24'],
+        particleCount: 75,
+        spread: 80,
+        origin: { y: 0.55 },
+        colors: ['#10b981', '#06b6d4', '#34d399', '#38bdf8', '#fbbf24'],
       });
     } catch (e) {
       console.error(e);
@@ -161,14 +158,6 @@ export const PointsScreen: React.FC<PointsScreenProps> = ({
       });
     } catch (e) {
       console.error(e);
-    }
-  };
-
-  const handleCopyCode = () => {
-    if (redeemSuccessResult) {
-      navigator.clipboard?.writeText(redeemSuccessResult.voucherCode);
-      setCopiedCode(true);
-      setTimeout(() => setCopiedCode(false), 2000);
     }
   };
 
@@ -595,13 +584,13 @@ export const PointsScreen: React.FC<PointsScreenProps> = ({
         </div>
       )}
 
-      {/* MODAL 2: Sukses Penukaran Poin (REDEEM) */}
+      {/* MODAL 2: Sukses Penukaran Poin (REDEEM) - Clean Redesign without QR Code */}
       {redeemSuccessResult && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4">
           <div 
-            className="w-full max-w-sm rounded-3xl p-6 text-center space-y-4 shadow-2xl relative overflow-hidden border border-white/90"
+            className="w-full max-w-sm rounded-3xl p-6 text-center space-y-4 shadow-2xl relative overflow-hidden border border-white/95"
             style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 250, 0.85) 100%)',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 253, 250, 0.92) 100%)',
               backdropFilter: 'blur(20px)',
               boxShadow: '0 25px 50px -12px rgba(6, 182, 212, 0.35), inset 0 1px 2px rgba(255, 255, 255, 1)'
             }}
@@ -614,52 +603,86 @@ export const PointsScreen: React.FC<PointsScreenProps> = ({
               }}
             />
 
-            {/* Glowing Icon */}
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center shadow-lg ring-8 ring-emerald-50">
-              <CheckCircle className="w-9 h-9 stroke-[2.5]" />
-            </div>
-
-            <div>
-              <span className="text-[10px] font-extrabold text-emerald-600 uppercase tracking-widest block">
-                Penukaran Berhasil!
-              </span>
-              <h3 className="text-base font-extrabold text-slate-900 mt-0.5">
-                {redeemSuccessResult.reward.title}
-              </h3>
-              <p className="text-xs text-slate-600 mt-1">
-                Tunjukkan voucher ini di kasir <span className="font-bold text-slate-900">{redeemSuccessResult.reward.merchant}</span> atau buka dari halaman Voucher Saya.
-              </p>
-            </div>
-
-            {/* Voucher Barcode / QR Box with glass border */}
-            <div className="p-4 rounded-2xl bg-white border-2 border-dashed border-emerald-300 shadow-inner space-y-2">
-              <QrCode className="w-24 h-24 mx-auto text-slate-800" />
-              <div className="flex items-center justify-center gap-2 pt-1">
-                <span className="font-mono font-extrabold text-sm text-slate-800 tracking-wider">
-                  {redeemSuccessResult.voucherCode}
-                </span>
-                <button
-                  onClick={handleCopyCode}
-                  className="p-1.5 rounded-lg bg-slate-100 hover:bg-emerald-100 text-slate-600 hover:text-emerald-700 shadow-sm transition-all"
-                  title="Salin Kode Voucher"
-                >
-                  {copiedCode ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-                </button>
+            {/* Glowing Big Green Success Icon with animated pulse */}
+            <div className="relative mx-auto w-20 h-20 flex items-center justify-center">
+              <div className="w-18 h-18 rounded-full bg-gradient-to-tr from-emerald-500 via-teal-500 to-emerald-400 text-white flex items-center justify-center shadow-[0_8px_20px_rgba(16,185,129,0.38)] ring-8 ring-emerald-100/80 relative overflow-hidden">
+                <div 
+                  className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-t-full"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255,255,255,0.65) 0%, transparent 100%)'
+                  }}
+                />
+                <CheckCircle className="w-10 h-10 stroke-[2.8] drop-shadow-sm" />
               </div>
             </div>
 
-            <button
-              onClick={() => {
-                const currentReward = redeemSuccessResult.reward;
-                setRedeemSuccessResult(null);
-                if (onNavigateVouchers) {
-                  onNavigateVouchers();
-                }
-              }}
-              className="w-full py-3.5 rounded-2xl gloss-pill-btn font-black text-xs shadow-md active:scale-95"
-            >
-              Selesai & Simpan Voucher
-            </button>
+            {/* Title & Subtitle */}
+            <div className="space-y-1">
+              <span className="text-[11px] font-black text-emerald-600 uppercase tracking-widest block">
+                PENUKARAN BERHASIL!
+              </span>
+              <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight leading-snug">
+                {redeemSuccessResult.reward.title}
+              </h3>
+            </div>
+
+            {/* Voucher Card Summary Box (Glassmorphism Frutiger Aero) */}
+            <div className="p-3.5 rounded-2xl bg-white/90 border border-emerald-200/80 shadow-sm text-left space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase text-slate-500 tracking-wider">
+                  Mitra Kampus
+                </span>
+                <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2 py-0.5 rounded-md">
+                  {redeemSuccessResult.reward.merchant}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold uppercase text-slate-500 tracking-wider">
+                  Nilai Keuntungan
+                </span>
+                <span className="text-xs font-black text-emerald-700">
+                  {redeemSuccessResult.reward.nominalText}
+                </span>
+              </div>
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                <span className="text-[11px] font-medium text-slate-500">
+                  Sisa Poin Kamu:
+                </span>
+                <span className="text-xs font-black text-slate-800 tabular-nums bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
+                  {redeemSuccessResult.remainingPoints.toLocaleString('id-ID')} pt
+                </span>
+              </div>
+            </div>
+
+            {/* Petunjuk Swipe to Redeem */}
+            <p className="text-xs text-slate-600 leading-relaxed px-1">
+              Voucher telah ditambahkan ke koleksimu. Tunjukkan dan geser (swipe) voucher ini di kasir saat transaksi.
+            </p>
+
+            {/* 2 CTA Buttons */}
+            <div className="space-y-2 pt-1">
+              {/* Tombol Utama (Primary Button - Hijau Glossy) */}
+              <button
+                onClick={() => {
+                  setRedeemSuccessResult(null);
+                  if (onNavigateVouchers) {
+                    onNavigateVouchers();
+                  }
+                }}
+                className="w-full py-3.5 rounded-2xl gloss-pill-btn font-black text-xs shadow-md active:scale-95 transition-all flex items-center justify-center gap-2"
+              >
+                <Gift className="w-4 h-4" />
+                <span>Lihat Voucher Saya</span>
+              </button>
+
+              {/* Tombol Kedua (Secondary Button - Outlined/Transparan) */}
+              <button
+                onClick={() => setRedeemSuccessResult(null)}
+                className="w-full py-2.5 rounded-2xl bg-white/80 hover:bg-white text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-bold transition-all shadow-sm active:scale-95"
+              >
+                Tukar Voucher Lain
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -137,7 +137,22 @@ export default function App() {
     };
     setTransactions([newTx, ...transactions]);
 
-    triggerToast(`✨ Voucher ${reward.title} siap digunakan! Sisa saldo: ${newPoints} pt.`);
+    // Add redeemed voucher to user's voucher list so it can be swiped at cashier
+    const newVoucher: UserVoucher = {
+      id: `vch-${Date.now()}`,
+      category: reward.merchantType === 'merchandise' ? 'koperasi' : (reward.merchantType as any),
+      title: reward.title,
+      merchant: reward.merchant,
+      location: reward.merchantType === 'kantin' ? 'Stand Kantin Blok M FEB' : 'FEB UNJ',
+      validUntil: '30 Nov 2026',
+      code: `${reward.codePrefix}-${Math.floor(1000 + Math.random() * 9000)}`,
+      status: 'aktif',
+      nominalText: reward.nominalText,
+      terms: reward.terms,
+    };
+    setUserVouchers((prev) => [newVoucher, ...prev]);
+
+    triggerToast("✨ Voucher berhasil disimpan! Buka 'Voucher Saya' untuk menggunakannya.");
   };
 
   // Confirm Contribution to Green Fund

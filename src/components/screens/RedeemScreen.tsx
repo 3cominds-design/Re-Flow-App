@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Search, Coffee, Utensils, Printer, Gamepad2, Package, Sparkles, CheckCircle, QrCode, Copy, Check } from 'lucide-react';
+import { ArrowLeft, Search, Coffee, Utensils, Printer, Gamepad2, Package, Sparkles, CheckCircle, Gift } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { initialRewards } from '../../data/mockData';
 import { RewardItem } from '../../types/reflow';
@@ -20,8 +20,7 @@ export const RedeemScreen: React.FC<RedeemScreenProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<'semua' | 'kantin' | 'koperasi' | 'percetakan' | 'merchandise'>('semua');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [activeRewardModal, setActiveRewardModal] = useState<RewardItem | null>(null);
-  const [redeemedCode, setRedeemedCode] = useState<string | null>(null);
-  const [copied, setCopied] = useState<boolean>(false);
+  const [isRedeemedSuccess, setIsRedeemedSuccess] = useState<boolean>(false);
 
   const categories = [
     { id: 'semua', label: 'Semua Mitra' },
@@ -59,28 +58,24 @@ export const RedeemScreen: React.FC<RedeemScreenProps> = ({
     if (!activeRewardModal) return;
     if (userPoints < activeRewardModal.pointsCost) return;
 
-    const generatedCode = `${activeRewardModal.codePrefix}-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(100 + Math.random() * 900)}`;
-    setRedeemedCode(generatedCode);
     onRedeemReward(activeRewardModal);
+    setIsRedeemedSuccess(true);
 
     try {
       confetti({
-        particleCount: 50,
-        spread: 60,
-        origin: { y: 0.6 },
-        colors: ['#f59e0b', '#10b981', '#06b6d4'],
+        particleCount: 65,
+        spread: 75,
+        origin: { y: 0.55 },
+        colors: ['#10b981', '#06b6d4', '#34d399', '#38bdf8', '#fbbf24'],
       });
     } catch (e) {
       console.error(e);
     }
   };
 
-  const handleCopyCode = () => {
-    if (redeemedCode) {
-      navigator.clipboard?.writeText(redeemedCode);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+  const handleCloseModal = () => {
+    setActiveRewardModal(null);
+    setIsRedeemedSuccess(false);
   };
 
   return (
@@ -183,7 +178,7 @@ export const RedeemScreen: React.FC<RedeemScreenProps> = ({
               <div className="mt-2.5">
                 <button
                   onClick={() => {
-                    setRedeemedCode(null);
+                    setIsRedeemedSuccess(false);
                     setActiveRewardModal(reward);
                   }}
                   className={`w-full py-1.5 rounded-xl text-xs font-bold transition-all ${
@@ -204,7 +199,7 @@ export const RedeemScreen: React.FC<RedeemScreenProps> = ({
       {activeRewardModal && (
         <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
           <div className="w-full max-w-sm bg-white rounded-t-3xl sm:rounded-3xl p-5 space-y-4 shadow-2xl">
-            {!redeemedCode ? (
+            {!isRedeemedSuccess ? (
               <>
                 <div className="flex items-start justify-between">
                   <div>
@@ -247,47 +242,85 @@ export const RedeemScreen: React.FC<RedeemScreenProps> = ({
               </>
             ) : (
               <>
-                <div className="text-center space-y-2">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
-                    <CheckCircle className="w-7 h-7" />
+                <div className="text-center space-y-3">
+                  {/* Glowing Big Green Success Icon */}
+                  <div className="relative mx-auto w-18 h-18 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-emerald-500 via-teal-500 to-emerald-400 text-white flex items-center justify-center shadow-[0_8px_20px_rgba(16,185,129,0.38)] ring-8 ring-emerald-100/80 relative overflow-hidden">
+                      <div 
+                        className="absolute top-0 left-0 right-0 h-1/2 pointer-events-none rounded-t-full"
+                        style={{
+                          background: 'linear-gradient(180deg, rgba(255,255,255,0.65) 0%, transparent 100%)'
+                        }}
+                      />
+                      <CheckCircle className="w-9 h-9 stroke-[2.8] drop-shadow-sm" />
+                    </div>
                   </div>
-                  <h3 className="text-base font-bold text-slate-900">
-                    Penukaran Berhasil!
-                  </h3>
-                  <p className="text-xs text-slate-500">
-                    Tunjukkan barcode atau kode ini kepada kasir mitra kampus.
+
+                  <div className="space-y-1">
+                    <span className="text-[11px] font-black text-emerald-600 uppercase tracking-widest block">
+                      PENUKARAN BERHASIL!
+                    </span>
+                    <h3 className="text-base font-black text-slate-900 tracking-tight leading-snug">
+                      {activeRewardModal.title}
+                    </h3>
+                  </div>
+
+                  {/* Summary Box */}
+                  <div className="p-3.5 rounded-2xl bg-white/90 border border-emerald-200/80 shadow-sm text-left space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase text-slate-500 tracking-wider">
+                        Mitra Kampus
+                      </span>
+                      <span className="text-[11px] font-extrabold text-emerald-800 bg-emerald-100/90 border border-emerald-300 px-2 py-0.5 rounded-md">
+                        {activeRewardModal.merchant}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-bold uppercase text-slate-500 tracking-wider">
+                        Nilai Keuntungan
+                      </span>
+                      <span className="text-xs font-black text-emerald-700">
+                        {activeRewardModal.nominalText}
+                      </span>
+                    </div>
+                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] font-medium text-slate-500">
+                        Sisa Poin Kamu:
+                      </span>
+                      <span className="text-xs font-black text-slate-800 tabular-nums bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200">
+                        {(userPoints - activeRewardModal.pointsCost).toLocaleString('id-ID')} pt
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-slate-600 leading-relaxed px-1">
+                    Voucher telah ditambahkan ke koleksimu. Tunjukkan dan geser (swipe) voucher ini di kasir saat transaksi.
                   </p>
                 </div>
 
-                {/* Simulated Barcode / QR */}
-                <div className="p-4 rounded-2xl bg-slate-50 border-2 border-dashed border-emerald-300 text-center space-y-2">
-                  <QrCode className="w-28 h-28 mx-auto text-slate-800" />
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="font-mono font-bold text-sm text-slate-800 tracking-wider">
-                      {redeemedCode}
-                    </span>
-                    <button
-                      onClick={handleCopyCode}
-                      className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-emerald-700 shadow-sm"
-                      title="Salin Kode"
-                    >
-                      {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                    </button>
-                  </div>
-                </div>
+                {/* 2 CTA Buttons */}
+                <div className="space-y-2 pt-1">
+                  <button
+                    onClick={() => {
+                      const currentReward = activeRewardModal;
+                      handleCloseModal();
+                      if (onGoToMyVouchers && currentReward) {
+                        onGoToMyVouchers(currentReward);
+                      }
+                    }}
+                    className="w-full py-3.5 rounded-2xl gloss-pill-btn font-black text-xs shadow-md active:scale-95 transition-all flex items-center justify-center gap-2"
+                  >
+                    <Gift className="w-4 h-4" />
+                    <span>Lihat Voucher Saya</span>
+                  </button>
 
-                <button
-                  onClick={() => {
-                    const currentReward = activeRewardModal;
-                    setActiveRewardModal(null);
-                    if (onGoToMyVouchers && currentReward) {
-                      onGoToMyVouchers(currentReward);
-                    }
-                  }}
-                  className="w-full py-3 rounded-2xl gloss-pill-btn font-extrabold text-xs shadow-md"
-                >
-                  Selesai & Simpan Voucher
-                </button>
+                  <button
+                    onClick={handleCloseModal}
+                    className="w-full py-2.5 rounded-2xl bg-white/80 hover:bg-white text-slate-700 hover:text-slate-900 border border-slate-200 text-xs font-bold transition-all shadow-sm active:scale-95"
+                  >
+                    Tukar Voucher Lain
+                  </button>
+                </div>
               </>
             )}
           </div>
